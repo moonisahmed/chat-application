@@ -6,34 +6,71 @@
 	<meta charset="utf-8" name="author" content="Moonis Ahmed">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css\stylesheet.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 </head>
 <body id="indexBody">
+        <div class="containter">
+            <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class = "well">
+                        <h4><b>Online users</b></h4>
+                        <ul class="list-group" id="users"></ul>
+                        
+                    </div>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                    <div class = "row">
+                        <div class= "col-md-8 col-sm-8 col-xs-8">
+                            <ul class="list-group" id="history">
+                            <li class="left clearfix">
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                            <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                            dolor, quis ullamcorper ligula sodales.
+                                        </p>
+                                    </div>
+                                </li>
 
+                            </ul>
+                            <div class="chat" id="chatname"></div>
+                        </div>
 
-        <main>
-          <ol id="history">
-          </ol>
-          <form>
-            <input id="initials">
-            <input id="message">
-            <button>Send</button>
-          </form>
-        </main>
-       
+                    </div>
+                    <div class="row">
+                        <div class= "col-md-8 col-sm-8 col-xs-8">
+                            <form class="form-inline" id="messageForm">
+                                <div class="form-group">
+                                       
+                                    <div id="nameDivs" class="input-group">
+                                        <label class="sr-only">Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Name">
+                                    </div>    
+                                    <label class="sr-only" >Message</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="message" placeholder="Enter Text Here">   
+                                    </div>
+                                    <button id="submit" type="submit" class="btn btn-primary">Send</button>
+                                 </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-     <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
        
     
-<footer>
-  <div>
-    Made By Moonis Ahmed
-    <br> A website made for SENG 513 Web Base Systems
-  </div>
 
-</footer>
 
 
 </body>
