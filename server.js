@@ -1,11 +1,12 @@
 
 
-var userList = ['x'];
+var userList = ["x"];
+var users= [];
 var chatHist = [];
 var anonCount = 0;
 var express = require('express');
 var app = express();
-
+var cookieValue;
 var http = require('http');
 var server = http.Server(app);
 
@@ -16,20 +17,31 @@ var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
     console.log('a user connected');
+    io.emit('serverUpdate', users,chatHist);
     
-    socket.on('message', function (name,msg,time) {
+    socket.on('message', function (msg,name,color) {
+        if(msg.startsWith("/"))
+            {
+                if(msg.substring(1,5) === "nick")
+                {
+                    io.emit("userUpdate",name, msg.substring(6,msg.length),"nick",users,userList);
+                }
+                if(msg.substring(1,6) === "color")
+                {
+                     io.emit("userUpdate",name,msg.substring(6,msg.length),"color",users,userList);
+                }
+                if(msg.substring(1,7) === "colour")
+                {
+                     io.emit("userUpdate",name,msg.substring(6,msg.length),"color",users,userList);
+                }
+            }
         
-        chatHist.push({name:name,message:msg,time:time});
-        
-        //io.emit('message', msg);
+        //chatHist.reverse();
         console.log('message: '+ msg);
 
         //time stuff
         var dt = new Date();
         var utcDate = dt.toUTCString();
-        //var timeStamp = Math.floor(Date.now()/1000);        
-        //console.log(utcDate);
-        //io.emit('time',utcDate);
         
         //Nickname stuff
         if(name ==="")
@@ -38,26 +50,38 @@ io.on('connection', function (socket) {
             anonCount++;
         }
         
+        if(chatHist.length >200)
+            {
+                chatHist.shift();
+            }
+        
+        
+        for(var user in users)
+            {
+                if(users[user].name.toLowerCase() === name.toLowerCase())
+                    {
+                        color = users[user].color;
+                        console.log(color + "color");
+                        console.log(users[user.color] + "Usercolor");
+                    }
+                    }
+
+        chatHist.push({name:name,message:msg,time:utcDate,color:color});
+
         if(!userList.includes(name.toLowerCase()))
         {
             userList.push(name.toLowerCase());
-            io.emit('newUser',name,chatHist);
+            users.push({name:name.toLowerCase(),color:color});
+            io.emit('newUser',name,chatHist,color,users);
             console.log("New User entered:", name);
         }
-        //var timeAndMessage = [utcDate,msg]; 
-        io.emit('test',name, msg, utcDate);
-        console.log('server test');
-    });
-    /*
-    socket.on('name', function (name) { 
         
-       
-        
-        io.emit('name',name);
+        io.emit('test',name, msg, utcDate,color);
+        console.log('sent to client');
     });
-    
-    */
+
     socket.on('disconnect', function () {
+        
     console.log("User disconnected");
     });
     
@@ -70,6 +94,8 @@ io.on('connection', function (socket) {
 server.listen(8080, function() {
   console.log('Chat server running');
 });
+
+    
 
 
 
