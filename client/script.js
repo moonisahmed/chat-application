@@ -24,7 +24,8 @@ $('form').submit(function () {
     else{
             socket.emit('message', text, nickname,getRandomColor());    
     }
-    
+     
+    $("#nameDivs").css("display","none");
     $('#message').val('');
     $('#name').val('');
     return false; 
@@ -33,6 +34,8 @@ $('form').submit(function () {
 //NewUser added and cookie is set
 socket.on('newUser', function(name,chatHist,color,userList){
     setCookie("username",name,2);
+    
+    $('#chatName').html(name);
     $('#users').append($('<li class="list-group-item">').text(name).css({
         'backgroundColor':color}));
 
@@ -50,7 +53,8 @@ socket.on('test', function(name,msg,time,color) {
 
 // Update Chat and User List on Connect
 socket.on('serverUpdate', function(userList,chatHist) {
-          
+          var oldname = getCookie('username');
+        $('#chatName').html(oldname);
          for(var user in userList)
         {
                 $('#users').append($('<li class="list-group-item">').text(userList[user].name).css({
@@ -61,7 +65,7 @@ socket.on('serverUpdate', function(userList,chatHist) {
             {
         
         
-                $('#history').append($('<h4 class="list-group-item">').text(chatHist[chat].message).css({'color':chatHist[chat].color}));
+                $('#history').append($('<h4 class="list-group-item">').text(chatHist[chat].message));
                 $('#history').append($('<p>').text(chatHist[chat].time));
                 $('#history').append($('<p class="currentUserHistory">').text("By: " + chatHist[chat].name).css({'color':chatHist[chat].color}));
                 console.log(chatHist[chat].name);
@@ -86,10 +90,13 @@ socket.on('userUpdate', function(currentName,newName,type,users,userList) {
                     setCookie('username',newName,2);
                     for(var user in users)
                         {
+                            console.log(users[user].name);
                             if(users[user].name === currentName)
                             {
-                            users[user].name = newName;
-                            console.log("name changed users");
+                                users[user].name = newName;
+                                $('#history').append($('<p>').text("Name changed to " + newName).css({'color':"red"}));
+                                console.log("name changed users");
+                                socket.emit("updateUsers",users);
                             }
                         }
                     for(var user in userList)
@@ -97,10 +104,13 @@ socket.on('userUpdate', function(currentName,newName,type,users,userList) {
                             if(userList[user] === currentName)
                             {
                                 userList[user] = newName;
-                                $('#history').append($('<p>').text("Name changed to %s",newName).css({'font-style':italic}));
+                                //$('#history').append($('<p>').text("Name changed to "++newName).css({'color':"red"}));
                                 console.log("name changed userlist");
+                                socket.emit("updateUserList",userList);
+                                
                             }
                         }
+                    //io.emit('serverUpdate', users,chatHist);
                     
                 }
             changePossible = true;
@@ -113,12 +123,14 @@ socket.on('userUpdate', function(currentName,newName,type,users,userList) {
                             if(users[user].name === currentName)
                             {
                                 users[user].color = getRandomColor();
-                                $('#history').append($('<p>').text("color changed").css({'font-style':italic}));
+                                $('#history').append($('<p>').text("color changed to "+ users[user].color ).css({'color':"red"}));
                                 console.log("color changed");
+                                socket.emit("updateUsers",users);
                             }
                         }
         
         }
+    
     });
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));

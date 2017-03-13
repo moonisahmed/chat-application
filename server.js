@@ -19,6 +19,15 @@ io.on('connection', function (socket) {
     console.log('a user connected');
     io.emit('serverUpdate', users,chatHist);
     
+    socket.on("updateUsers", function(user){
+       users = user;
+    
+    });
+    
+    socket.on("updateUserList", function(user){
+       userList = user; 
+    });
+    
     socket.on('message', function (msg,name,color) {
         if(msg.startsWith("/"))
             {
@@ -28,13 +37,14 @@ io.on('connection', function (socket) {
                 }
                 if(msg.substring(1,6) === "color")
                 {
-                     io.emit("userUpdate",name,msg.substring(6,msg.length),"color",users,userList);
+                     io.emit("userUpdate",name,msg.substring(7,msg.length),"color",users,userList);
                 }
                 if(msg.substring(1,7) === "colour")
                 {
-                     io.emit("userUpdate",name,msg.substring(6,msg.length),"color",users,userList);
+                     io.emit("userUpdate",name,msg.substring(8,msg.length),"color",users,userList);
                 }
             }
+        else{
         
         //chatHist.reverse();
         console.log('message: '+ msg);
@@ -77,7 +87,7 @@ io.on('connection', function (socket) {
         }
         
         io.emit('test',name, msg, utcDate,color);
-        console.log('sent to client');
+        console.log('sent to client');}
     });
 
     socket.on('disconnect', function () {
