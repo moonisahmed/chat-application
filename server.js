@@ -33,15 +33,19 @@ io.on('connection', function (socket) {
             {
                 if(msg.substring(1,5) === "nick")
                 {
-                    io.emit("userUpdate",name, msg.substring(6,msg.length),"nick",users,userList);
-                }
-                if(msg.substring(1,6) === "color")
+                    if(msg.substring(5,6) === " ")
+                        {
+                            io.emit("userUpdate",name, msg.substring(6,msg.length),"nick",users,userList);
+                        }
+                
+                    if(msg.substring(,10) === "color")
                 {
                      io.emit("userUpdate",name,msg.substring(7,msg.length),"color",users,userList);
                 }
-                if(msg.substring(1,7) === "colour")
+                    if(msg.substring(5,11)=== "colour")
                 {
                      io.emit("userUpdate",name,msg.substring(8,msg.length),"color",users,userList);
+                }
                 }
             }
         else{
