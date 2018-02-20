@@ -1,4 +1,17 @@
-Moonis Ahmed
-10125551
+JavaScript TextStats
+The purpose of this assignment is to practice JavaScript programming.
 
-https://github.com/moonisahmed/lighthouse.github.io
+Within code.js, the function getStats(txt) reads textual input and computes statistical information for the given input. The results are as follows:
+
+nChars: the total number of characters in the text, including all whitespaces
+nWords: the total number of words in the text
+nLines: the number of lines in the text
+nNonEmptyLines: the number of lines in the text containing at least one visible character (any non-whitespace character)
+maxLineLength: the length of the longest line, including any trailing whitespace except newlines '\n'
+averageWordLength: the average word length in the text
+palindromes: a list of unique palindromes in the text
+longestWords: the 10 longest words in the text - in the case of ties, the secondary sorting criteria is alphabetically sorted
+mostFrequentWords: the 10 most frequent words of the text, concatenated with the respective frequencies - again, ties are resolved by alphabetical sorting
+Note that code.js is authored by Moonis Ahmed - the original repo is authored by Pavol Federl.
+
+Originally developed for W2017 SENG513: Web Based Systems
